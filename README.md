@@ -29,8 +29,7 @@ spark-code/
 │   └── 07-arrow-optimizations/  # Apache Arrow optimizations
 ├── data/                        # Sample datasets
 │   ├── customers.parquet        # Customer data
-│   ├── transactions.parquet     # Transaction data (164 files)
-│   └── _SUCCESS                # Success markers for data generation
+│   └── transactions.parquet     # Transaction data (164 files)
 ├── output/                      # Performance test outputs
 │   ├── baseline/               # Baseline performance results
 │   ├── coalesce_2/            # Coalescing optimization results
@@ -110,7 +109,6 @@ The project uses several sample datasets:
 
 - **Customer Data**: Synthetic customer information with demographics(156KB)
 - **Transaction Data**: Sample transaction records with 164 parquet files(870MB)
-- **Performance Baselines**: Generated output files for comparison
 
 All datasets are in Parquet format for optimal performance with Spark.
 
