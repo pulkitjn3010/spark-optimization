@@ -36,7 +36,6 @@ spark-code/
 │   ├── coalesce_2/            # Coalescing optimization results
 │   ├── repartition_2/          # Repartition optimization results
 │   └── repartition_4/          # Advanced repartition results
-├── venv/                       # Virtual environment
 ├── requirements.txt            # Python dependencies
 └── README.md                   # This file
 ```
@@ -118,8 +117,8 @@ All datasets are in Parquet format for optimal performance with Spark.
 ## 👥 Contributors
 
 This project is a collaborative effort by a dedicated team of 5
-**Nishtha**
-**Riya**
-**Pulkit**
-**Shivansh**
-**Anuj**
+- **Nishtha**
+- **Riya**
+- **Pulkit**
+- **Shivansh**
+- **Anuj**
