@@ -4,110 +4,71 @@ This directory contains sample datasets used for demonstrating PySpark optimizat
 
 ## Dataset Descriptions
 
-### 1. NYC Taxi Data (`yellow_tripdata_2023-09.parquet`)
-- **Source**: NYC Taxi & Limousine Commission
-- **Description**: Yellow taxi trip records from September 2023
-- **Size**: ~1.2GB (compressed)
-- **Use Cases**: 
-  - Join optimization demonstrations
-  - Partition tuning examples
-  - Skew handling techniques
-  - Performance benchmarking
+**Parquet Format**: All datasets are stored in Parquet format for optimal performance with Spark
 
-**Schema**:
-- `tpep_pickup_datetime`: Pickup timestamp
-- `tpep_dropoff_datetime`: Dropoff timestamp
-- `PULocationID`: Pickup location ID
-- `DOLocationID`: Dropoff location ID
-- `trip_distance`: Trip distance in miles
-- `fare_amount`: Fare amount
-- `tip_amount`: Tip amount
-- `total_amount`: Total amount
+### 1. **Customer Data** (`customers.parquet`)
 
-### 2. Customer Data (`customers.parquet`)
-- **Description**: Synthetic customer information dataset
-- **Use Cases**: 
-  - Broadcast join examples
-  - Small table optimization
-  - Lookup table demonstrations
+* **Size**: 156 KB
+* **Description**: Synthetic dataset containing customer demographic and location details.
 
-**Schema**:
-- `customer_id`: Unique customer identifier
-- `name`: Customer name
-- `email`: Customer email
-- `city`: Customer city
-- `state`: Customer state
-- `registration_date`: Customer registration date
+#### **Schema**
 
-### 3. Transaction Data (`transactions.parquet`)
-- **Description**: Sample transaction records
-- **Use Cases**:
-  - Join optimization with customer data
-  - Aggregation examples
-  - Window function demonstrations
+| Column Name | Type   | Description                     |
+| ----------- | ------ | ------------------------------- |
+| `cust_id`   | string | Unique customer identifier      |
+| `name`      | string | Customer’s full name            |
+| `age`       | string | Customer’s age                  |
+| `gender`    | string | Gender of the customer          |
+| `birthday`  | string | Date of birth of the customer   |
+| `zip`       | string | Customer ZIP/postal code        |
+| `city`      | string | City where the customer resides |
 
-**Schema**:
-- `transaction_id`: Unique transaction identifier
-- `customer_id`: Customer identifier (foreign key)
-- `amount`: Transaction amount
-- `transaction_date`: Transaction timestamp
-- `category`: Transaction category
-- `merchant`: Merchant name
+#### **Sample Data**
 
-## Data Generation
+| cust_id    | name          | age | gender | birthday   | zip   | city        |
+| ---------- | ------------- | --- | ------ | ---------- | ----- | ----------- |
+| C007YEYTX9 | Aaron Abbott  | 34  | Female | 7/13/1991  | 97823 | boston      |
+| C00B971T1J | Aaron Austin  | 37  | Female | 12/16/2004 | 30332 | chicago     |
+| C00WRSJF1Q | Aaron Barnes  | 29  | Female | 3/11/1977  | 23451 | denver      |
+| C01AZWQMF3 | Aaron Barrett | 31  | Male   | 7/9/1998   | 46613 | los_angeles |
+| C01BKUFRHA | Aaron Becker  | 54  | Male   | 11/24/1979 | 40284 | san_diego   |
 
-If you need to regenerate or create additional sample data, you can use the following approach:
+---
 
-```python
-from pyspark.sql import SparkSession
-from pyspark.sql.functions import *
-import random
-from datetime import datetime, timedelta
+### 2. **Transaction Data** (`transactions.parquet`)
 
-# Create sample customer data
-customers_data = []
-for i in range(10000):
-    customers_data.append({
-        'customer_id': i,
-        'name': f'Customer_{i}',
-        'email': f'customer{i}@example.com',
-        'city': random.choice(['New York', 'Los Angeles', 'Chicago', 'Houston']),
-        'state': random.choice(['NY', 'CA', 'IL', 'TX']),
-        'registration_date': datetime.now() - timedelta(days=random.randint(1, 365))
-    })
+* **Size**: 870 MB
+* **Description**: Synthetic dataset containing customer transaction details such as spending type, location, and amount.
+* **Use Cases**:
 
-# Create sample transaction data
-transactions_data = []
-for i in range(100000):
-    transactions_data.append({
-        'transaction_id': i,
-        'customer_id': random.randint(0, 9999),
-        'amount': round(random.uniform(10, 1000), 2),
-        'transaction_date': datetime.now() - timedelta(days=random.randint(1, 30)),
-        'category': random.choice(['Food', 'Shopping', 'Transport', 'Entertainment']),
-        'merchant': f'Merchant_{random.randint(1, 100)}'
-    })
-```
+  * Join and aggregation examples
+  * Partitioning and bucketing demonstrations
+  * Delta Lake optimization experiments
 
-## Data Usage Guidelines
+#### **Schema**
 
-1. **Parquet Format**: All datasets are stored in Parquet format for optimal performance with Spark
-2. **Partitioning**: Consider partitioning large datasets by date or category for better performance
-3. **Compression**: Parquet files use Snappy compression by default
-4. **Schema Evolution**: Parquet supports schema evolution, allowing you to add new columns
+| Column Name    | Type   | Description                                              |
+| -------------- | ------ | -------------------------------------------------------- |
+| `cust_id`      | string | Customer identifier (foreign key)                        |
+| `start_date`   | string | Customer’s account start date                            |
+| `end_date`     | string | Account closing or last active date                      |
+| `txn_id`       | string | Unique transaction identifier                            |
+| `date`         | string | Transaction date                                         |
+| `year`         | string | Transaction year                                         |
+| `month`        | string | Transaction month                                        |
+| `day`          | string | Transaction day                                          |
+| `expense_type` | string | Category of the expense (e.g., Groceries, Entertainment) |
+| `amt`          | string | Transaction amount                                       |
+| `city`         | string | City where the transaction occurred                      |
 
-## Performance Tips
+#### **Sample Data**
 
-- Use `spark.read.parquet()` for optimal reading performance
-- Consider caching frequently accessed datasets
-- Use appropriate partitioning strategies based on your query patterns
-- Monitor memory usage when working with large datasets
+| cust_id    | start_date | end_date   | txn_id          | date       | year | month | day | expense_type  | amt    | city        |
+| ---------- | ---------- | ---------- | --------------- | ---------- | ---- | ----- | --- | ------------- | ------ | ----------- |
+| C0YDPQWPBJ | 2010-07-01 | 2018-12-01 | TZ5SMKZY9S03OQJ | 2018-10-07 | 2018 | 10    | 7   | Entertainment | 10.42  | boston      |
+| C0YDPQWPBJ | 2010-07-01 | 2018-12-01 | TYIAPPNU066CJ5R | 2016-03-27 | 2016 | 3     | 27  | Motor/Travel  | 44.34  | portland    |
+| C0YDPQWPBJ | 2010-07-01 | 2018-12-01 | TETSXIK4BLXHJ6W | 2011-04-11 | 2011 | 4     | 11  | Entertainment | 3.18   | chicago     |
+| C0YDPQWPBJ | 2010-07-01 | 2018-12-01 | TQKL1QFJY3EM8LO | 2018-02-22 | 2018 | 2     | 22  | Groceries     | 268.97 | los_angeles |
+| C0YDPQWPBJ | 2010-07-01 | 2018-12-01 | TYL6DFP09PPXMVB | 2010-10-16 | 2010 | 10    | 16  | Entertainment | 2.66   | chicago     |
 
-## Data Privacy
-
-All datasets in this directory are either:
-- Publicly available datasets (NYC Taxi data)
-- Synthetic data generated for demonstration purposes
-- Anonymized sample data
-
-No real customer or transaction data is included in this repository.
+---
