@@ -115,8 +115,8 @@ All datasets are in Parquet format for optimal performance with Spark.
 ## 👥 Contributors
 
 This project is a collaborative effort by a dedicated team of 5
-- **Nishtha**
-- **Riya**
-- **Pulkit**
-- **Shivansh**
-- **Anuj**
+- [**Nishtha**](https://github.com/novnishtha)
+- [**Riya**](https://github.com/Riyag012)
+- [**Pulkit**](https://github.com/pulkitjn3010)
+- [**Shivansh**](https://github.com/sh1vanshgaur)
+- [**Anuj**](https://github.com/animus08)
